@@ -5,3 +5,4 @@ todo.txt
 src/plugins
 src/index.js
 src/config.js
+wrangler.toml
