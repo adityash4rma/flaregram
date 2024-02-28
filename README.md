@@ -12,6 +12,9 @@
 </div>
 <br><br>
 
+## INSTALLATION AND USAGE:
+(Read the wiki)[https://github.com/adityash4rma/flaregram/wiki]
+
 ## TODO
 
 <details open>
