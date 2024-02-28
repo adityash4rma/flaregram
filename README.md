@@ -13,7 +13,9 @@
 <br><br>
 
 ## INSTALLATION AND USAGE:
-(Read the wiki)[https://github.com/adityash4rma/flaregram/wiki]
+[Read the wiki](https://github.com/adityash4rma/flaregram/wiki)
+
+<br>
 
 ## TODO
 
