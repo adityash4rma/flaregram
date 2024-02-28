@@ -7,9 +7,10 @@
     ·
     <b>easy-to-use</b>
     <br><br>
-    <i>A light-weight, blazing fast, easy-to-use, Telegram HTTP bot API module written in javascript. It runs on cloudflare workers and uses wrangler too.</i>i>
+    <i>A light-weight, blazing fast, easy-to-use, Telegram HTTP bot API module written in javascript. It runs on cloudflare workers and uses wrangler too.</i>
   </p>
 </div>
+<br><br>
 
 ## TODO
 
