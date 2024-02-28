@@ -6,21 +6,21 @@
 
 
 /// --------- Setting Webhook URL ---------- ///
-async function setWebhook(URL, secret_token, should_drop_pending_updates) {
+async function setWebhook(URL, SECRET_TOKEN, DROP_PENDING_UPDATES) {
   let token;
   let HOOK_URL = `https://api.telegram.org/bot${BOT_TOKEN}/setWebhook?url=${URL}`;
 
-    if (secret_token === '') {
-      const token = secret_token; 
+    if (SECRET_TOKEN === '') {
+      const token = SECRET_TOKEN; 
       HOOK_URL = `${HOOK_URL}&secret_token=${token}`
-    } else if (typeof secret_token === "string") {
-      const token = secret_token
+    } else if (typeof SECRET_TOKEN === "string") {
+      const token = SECRET_TOKEN
       HOOK_URL = `${HOOK_URL}&secret_token=${token}`
     };
   
   
-  if (should_drop_pending_updates === "True") {
-    HOOK_URL = `${HOOK_URL}&drop_pending_updates=${should_drop_pending_updates}`
+  if (DROP_PENDING_UPDATES === "True") {
+    HOOK_URL = `${HOOK_URL}&drop_pending_updates=${DROP_PENDING_UPDATES}`
   } 
 
   //const response = await fetch(HOOK_URL, { method: 'POST' });

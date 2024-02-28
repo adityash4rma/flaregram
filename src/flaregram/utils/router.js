@@ -2,7 +2,7 @@
 
 import { updateHandler } from '../../index';
 import { setWebhook } from './webhook';
-import { secret_token, colors, WEBHOOK_URL, should_drop_pending_updates } from '../../config';
+import {  colors } from './strings.js';
 
 // Create a new router instance
 const router = {
@@ -29,7 +29,7 @@ async function handleBotRequest(update) {
     //const { method, body } = request;
     const data = await update.json();
 
-    if (secret_token == token) {
+    if (SECRET_TOKEN == token) {
       console.log(
         `SERVER: Incoming ${colors.yellow}SECRET_TOKEN${colors.white} has been verified [ ${colors.green}${token}${colors.white} ]`
       );
@@ -48,7 +48,7 @@ router.post('/bot', handleBotRequest);
 
 /// ----- Create a route for setting webhook url ---- ///
 router.post('/set-webhook', async (request) => {
-  const webhookResult = await setWebhook(WEBHOOK_URL, secret_token, should_drop_pending_updates);
+  const webhookResult = await setWebhook(WEBHOOK_URL, SECRET_TOKEN, DROP_PENDING_UPDATES);
   return new Response(webhookResult.description, { status: 200 });
 });
 
