@@ -1,0 +1,15 @@
+name = "flaregram"
+main = "src/index.js"
+compatibility_date = "2023-05-18"
+usage_model = "bundled"
+env = { }
+
+[dev]
+host = "localhost"
+
+# See readme.md for all env variable descriptions.
+[vars]
+BOT_TOKEN = ""
+WEBHOOK_URL = ""
+SECRET_TOKEN = ""
+DROP_PENDING_UPDATES = "True"
