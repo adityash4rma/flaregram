@@ -1,0 +1,11 @@
+name = "flaregram"
+main = "src/index.js"
+compatibility_date = "2023-06-18"
+usage_model = "bundled"
+env = { }
+
+[dev]
+host = "localhost"
+
+[vars]
+BOT_TOKEN = "6292649461:AAHOPkngWisYc8vEn3zNxrPXFmFfIVf9qRo"

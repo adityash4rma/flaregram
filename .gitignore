@@ -1,0 +1,7 @@
+/node_modules
+todo.txt
+/dist
+.prettierrc
+src/plugins
+src/index.js
+src/config.js
