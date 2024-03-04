@@ -7,9 +7,11 @@ env = { }
 [dev]
 host = "localhost"
 
-# See readme.md for all env variable descriptions.
+# See Wiki for all env variable descriptions.
 [vars]
+# Mandatory Variables
 BOT_TOKEN = ""
 WEBHOOK_URL = ""
+# Optional Parameters
 SECRET_TOKEN = ""
 DROP_PENDING_UPDATES = "True"
