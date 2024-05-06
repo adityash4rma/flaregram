@@ -7,11 +7,17 @@ env = { }
 [dev]
 host = "localhost"
 
-# See Wiki for all env variable descriptions.
 [vars]
+########## flaregram ###########
+#  ---- See Wiki for all env variable descriptions.
+
 # Mandatory Variables
+REPO_VERSION = "1.0.0"
 BOT_TOKEN = ""
 WEBHOOK_URL = ""
-# Optional Parameters
+
+# Optional Variables
 SECRET_TOKEN = ""
 DROP_PENDING_UPDATES = "True"
+
+##################################
