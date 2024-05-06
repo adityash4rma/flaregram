@@ -5,6 +5,7 @@ import {f_forwardMessage} from "./api/func_forwardMessage";
 import {f_forwardMessages} from "./api/func_forwardMessages";
 import {f_sendMessage} from "./api/func_sendMessage";
 import { f_answerCallbackQuery } from "./api/func_answerCallbackQuery";
+import { f_copyMessage } from "./api/func_copyMessage";
 
 /// Bot Object for flaregram
 
@@ -13,6 +14,7 @@ export const bot = {
         sendMessage: f_sendMessage,
         forwardMessage: f_forwardMessage,
         forwardMessages: f_forwardMessages,
+        copyMessage: f_copyMessage,
         answerCallbackQuery: f_answerCallbackQuery
     },
 

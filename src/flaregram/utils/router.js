@@ -2,7 +2,7 @@
 
 import { updateHandler } from '../../index';
 import { setWebhook } from './webhook';
-import {  colors } from './strings.js';
+import {  colors, status_good, status_bad } from './strings.js';
 
 // Create a new router instance
 const router = {
@@ -13,10 +13,11 @@ const router = {
   handle(request) {
     const { pathname } = new URL(request.url);
     const route = this.routes.find((route) => route.method === request.method && new RegExp(`^${route.path}$`).test(pathname));
+    console.log(route);
     if (route) {
       return route.handler(request);
     } else {
-      return new Response('Bot is running...', { status: 200 });
+      return new Response(JSON.stringify(status_good), { status: 200 });
     }
   },
 };
@@ -39,8 +40,9 @@ async function handleBotRequest(update) {
     }
   } catch (error) {
     console.error('Error processing update:', error);
+    return new Response()
   }
-  return new Response('Bot is running...', { status: 200 });
+  return new Response(JSON.stringify(status_good), { status: 200 });
 }
 
 // Route handler

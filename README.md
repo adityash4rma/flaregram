@@ -28,7 +28,7 @@
 |     sendMessage     | ✅ Working |
 |    forwardMessage   | ✅ Working |
 | answerCallbackQuery | ✅ Working |
-|   forwardMessages   | 🟨 Pending |
+|   forwardMessages   | ✅ Working |
 |     copyMessage     | 🟨 Pending |
 |     copyMessages    | 🟨 Pending |
 |      sendPhoto      | 🟨 Pending |
@@ -43,6 +43,11 @@
 |   MORE COMING SOON  |    ...    |
 
 </details>
+
+<br><br>
+
+## CHANGELOGS
+
 
 <br><br>
 
