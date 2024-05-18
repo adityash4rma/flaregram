@@ -3,7 +3,7 @@
 
 import { ErrorStr, colors } from '../utils/strings.js';
 
-/// --------- Sending Message Function ---------- ///
+/// --------- SAnswer Callback Query Function ---------- ///
 export async function f_answerCallbackQuery(body) {
   try {
   const API_URL = `https://api.telegram.org/bot${BOT_TOKEN}/answerCallbackQuery`;
