@@ -1,12 +1,12 @@
 
 
 <p align=center>
-<img alt="build" src="https://img.shields.io/static/v1?label=Build&message=Unstable&color=cc1236&logo=github">
-<img alt="GitHub package.json dynamic" src="https://img.shields.io/github/package-json/version/adityash4rma/flaregram?color=cc1236">
-<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/adityash4rma/flaregram?color=cc1236">
-<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/adityash4rma/flaregram?color=a8ff32">
+<img alt="build" src="https://img.shields.io/static/v1?label=Build&message=Unstable&color=ff1743&logo=github">
+<img alt="GitHub package.json dynamic" src="https://img.shields.io/github/package-json/version/adityash4rma/flaregram?color=ff1743">
+<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/adityash4rma/flaregram?color=ff1743">
+<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/adityash4rma/flaregram?color=ff1743">
 <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/adityash4rma/flaregram">
-<img alt="GitHub Discussions" src="https://img.shields.io/github/discussions/adityash4rma/flaregram?color=cc1236">
+<img alt="GitHub Discussions" src="https://img.shields.io/github/discussions/adityash4rma/flaregram?color=ff1743">
 </p>
 <br>
 
