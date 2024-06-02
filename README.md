@@ -28,7 +28,7 @@
 </div>
 <br>
 
-## Installation / Usage:
+## > Installation / Usage:
 > [Read the wiki](https://github.com/adityash4rma/flaregram/wiki)
 
 <br>
