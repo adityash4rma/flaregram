@@ -1,7 +1,6 @@
 name = "flaregram"
 main = "src/index.js"
 compatibility_date = "2023-05-18"
-usage_model = "bundled"
 env = { }
 
 [dev]
