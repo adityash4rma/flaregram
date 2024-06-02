@@ -1,10 +1,10 @@
-//// flaregram © 2024 by Aditya Sharma is licensed under Attribution-NonCommercial 4.0 International. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/
-
+//// flaregram © 2024 by Aditya Sharma is licensed under GNU AFFERO GENERAL PUBLIC LICENSE (GNU AGPL v3).
+import env from '../../config.json'
 
 /// --------- Setting Webhook URL ---------- ///
 async function setWebhook(URL, SECRET_TOKEN, DROP_PENDING_UPDATES) {
   let token;
-  let HOOK_URL = `https://api.telegram.org/bot${BOT_TOKEN}/setWebhook?url=${URL}`;
+  let HOOK_URL = `https://api.telegram.org/bot${env.BOT_TOKEN}/setWebhook?url=${URL}`;
 
     if (SECRET_TOKEN === '') {
       const token = SECRET_TOKEN; 

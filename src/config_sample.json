@@ -1,0 +1,8 @@
+{
+
+    "BOT_TOKEN": "xxxxxxxxx:xxxxxxxxxxxxxxxxxxxxxxxxxxxx", 
+    "WEBHOOK_URL" : "https://xxxxxxxxxxxxxx.x.x.x.xxxxxxxx/bot",
+    "SECRET_TOKEN" : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "DROP_PENDING_UPDATES" : "True"
+    
+}

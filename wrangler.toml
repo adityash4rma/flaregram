@@ -1,0 +1,10 @@
+name = "flaregram"
+main = "src/index.js"
+compatibility_date = "2023-05-18"
+compatibility_flags = ["nodejs_compat"]
+rules = [
+  { type = "Text", globs = ["config.json"], fallthrough = true }
+]
+
+[dev]
+host = "localhost"

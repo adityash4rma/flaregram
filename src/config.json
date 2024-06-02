@@ -1,0 +1,8 @@
+{
+
+    "BOT_TOKEN": "6292649461:AAFenF0UBe8qRNpviqCQQqVaVzR3UaUi78o", 
+    "WEBHOOK_URL" : "https://d966-59-98-22-72.ngrok-free.app/bot",
+    "SECRET_TOKEN" : "npnsqBKADK3D17oGTwCdfzbDPD2gqfDR0sRgRpFkHqsGJKnQjBCS7i_1uUUgGpWF",
+    "DROP_PENDING_UPDATES" : "True"
+    
+}
