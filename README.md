@@ -38,4 +38,4 @@
 ## > License
 ![License Logo](https://www.gnu.org/graphics/agplv3-with-text-162x68.png)
 
-_flaregram © 2024 by Aditya Sharma is licensed under Attribution-NonCommercial 4.0 International. To view a copy of this license_
+_flaregram © 2024 by Aditya Sharma is licensed under GNU AFFERO GENERAL PUBLIC LICENSE (GNU AGPL v3). To view a copy of this license_
