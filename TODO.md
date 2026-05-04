@@ -36,11 +36,12 @@ Beta's commit message acknowledges: _"Know Issues: new Router not working, plugi
 - `router.add()` registers exact-match `${method} ${pathname}` keys — fine, but no `/bot` and `/set-webhook` routes are wired up anywhere on beta. The legacy router did this; the new one needs equivalent wiring (probably inside `Client.launch()`).
 - Decision needed: is `legacy_router.js` kept as a fallback, or removed once the new Router/Client is functional?
 
-### 2. Entry point (`src/index.js`) is gitignored and uncommitted
-`wrangler.toml` says `main = "src/index.js"` but the file is in `.gitignore` and not in the repo. A fresh clone cannot run `npm start`. Once the Client/Router architecture is settled, ship a `src/index.sample.js` template that:
-1. Imports `app` (Client) and `router` from `flaregram/client.js`.
-2. Registers `app.on_message(...)` listeners.
-3. Default-exports `{ async fetch(request, env, ctx) { return app.launch(request, ctx); } }`.
+### 2. Entry point — `src/index.sample.js` shipped (uses legacy_router)
+A working starter template now lives at `src/index.sample.js`. It demonstrates a minimal bot (Section A: /start, /help, echo) and a richer bot (Section B: command table, inline keyboard, callback_query, message forwarding). Toggle which one runs with a one-line change inside `updateHandler`.
+
+It deliberately wires up against `legacy_router.js` since the new Router/Client in `client.js` is still incomplete. When that work lands, swap the import to `flaregram/client.js` and rewrite the file to use `app.on_message(...)` + `app.launch()`.
+
+`src/index.js` itself is still gitignored — copy `src/index.sample.js` → `src/index.js` to start.
 
 ### 3. `README.md` is in `.gitignore`
 Probably accidental — adding it to gitignore line 11 means README edits never get committed. Decide whether to remove that line (intent: keep README in repo) or leave (intent: README is locally edited only).
