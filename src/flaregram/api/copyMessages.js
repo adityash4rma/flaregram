@@ -1,12 +1,13 @@
 //// flaregram © 2024 by Aditya Sharma is licensed under GNU AFFERO GENERAL PUBLIC LICENSE (GNU AGPL v3).
 
 
+import env from '../../config.json'
 import { ErrorStr, colors } from '../utils/strings.js';
 
 /// --------- Copy Messages Function ---------- ///
-export async function f_copyMessage(body) {
+export async function f_copyMessages(body) {
   try {
-  const API_URL = `https://api.telegram.org/bot${BOT_TOKEN}/copyMessages`;
+  const API_URL = `https://api.telegram.org/bot${env.BOT_TOKEN}/copyMessages`;
 
   /// Making mandatory params ///
   let param_chat_id = '';
@@ -25,14 +26,14 @@ export async function f_copyMessage(body) {
     throw new Error(ErrorStr.undefinedParameter + colors.yellow + `from_chat_id` + colors.white);
   }
 
-  if (body.message_id != undefined) {
-    param_message_id = body.message_id;
+  if (body.message_ids != undefined) {
+    param_message_ids = body.message_ids;
   } else {
-    throw new Error(ErrorStr.undefinedParameter + colors.yellow + `message_id` + colors.white);
+    throw new Error(ErrorStr.undefinedParameter + colors.yellow + `message_ids` + colors.white);
   }
 
   /// Making optional params
-  const param_message_thread_id = body.message_thread_id == undefined?parseInt(body.message_thread_id) : '';
+  const param_message_thread_id = body.message_thread_id == undefined ? '' : parseInt(body.message_thread_id);
   const param_remove_caption = body.remove_caption == undefined?'':body.remove_caption;
   const param_disable_notification = body.disable_notification == undefined?'False':body.disable_notification;
   const param_protect_content = body.protect_content == undefined?'False':body.protect_content;
@@ -59,6 +60,7 @@ export async function f_copyMessage(body) {
     console.error(ErrorStr.telegramError + colors.yellow + response.description + colors.white)
     console.error(colors.red + `ERROR =>  ` + colors.yellow + `Cannot Copy Messages - msg: ${payload.message_ids}` + colors.white)
   };
+    return response;
   });
 
   return response;

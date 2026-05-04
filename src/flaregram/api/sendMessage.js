@@ -55,11 +55,10 @@ export async function f_sendMessage(body) {
     throw new Error('Error sending message');
   }
 
-  return response;
+  return await response.json();
   } catch (error){
-    console.error(error)
-  };
-  console.log(response.json())
-  return response.json()
+    console.error(error);
+    return { ok: false, error: error.message };
+  }
 }
 

@@ -1,12 +1,13 @@
 //// flaregram © 2024 by Aditya Sharma is licensed under GNU AFFERO GENERAL PUBLIC LICENSE (GNU AGPL v3).
 
 
+import env from '../../config.json'
 import { ErrorStr, colors } from '../utils/strings.js';
 
 /// --------- Forward Messages Function ---------- ///
 export async function f_forwardMessages(body) {
   try {
-  const API_URL = `https://api.telegram.org/bot${BOT_TOKEN}/forwardMessages`;
+  const API_URL = `https://api.telegram.org/bot${env.BOT_TOKEN}/forwardMessages`;
 
   /// Making mandatory params ///
   let param_chat_id = '';
@@ -32,7 +33,7 @@ export async function f_forwardMessages(body) {
   }
 
   /// Making optional params
-  const param_message_thread_id = body.message_thread_id == undefined?parseInt(body.message_thread_id) : '';
+  const param_message_thread_id = body.message_thread_id == undefined ? '' : parseInt(body.message_thread_id);
   const param_disable_notification = body.disable_notification == undefined?'False':body.disable_notification;
   const param_protect_content = body.protect_content == undefined?'False':body.protect_content;
 
@@ -57,6 +58,7 @@ export async function f_forwardMessages(body) {
     console.error(ErrorStr.telegramError + colors.yellow + response.description + colors.white)
     console.error(colors.red + `ERROR =>  ` + colors.yellow + `Cannot Forward Messages - msgs: ${payload.message_ids} to recipent, ${payload.chat_id}` + colors.white)
   };
+    return response;
   });
 
   return response;

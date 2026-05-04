@@ -3,18 +3,12 @@ import env from '../../config.json'
 
 /// --------- Setting Webhook URL ---------- ///
 async function setWebhook(URL, SECRET_TOKEN, DROP_PENDING_UPDATES) {
-  let token;
   let HOOK_URL = `https://api.telegram.org/bot${env.BOT_TOKEN}/setWebhook?url=${URL}`;
 
-    if (SECRET_TOKEN === '') {
-      const token = SECRET_TOKEN; 
-      HOOK_URL = `${HOOK_URL}&secret_token=${token}`
-    } else if (typeof SECRET_TOKEN === "string") {
-      const token = SECRET_TOKEN
-      HOOK_URL = `${HOOK_URL}&secret_token=${token}`
-    };
-  
-  
+  if (typeof SECRET_TOKEN === "string" && SECRET_TOKEN !== '') {
+    HOOK_URL = `${HOOK_URL}&secret_token=${SECRET_TOKEN}`;
+  }
+
   if (DROP_PENDING_UPDATES === "True") {
     HOOK_URL = `${HOOK_URL}&drop_pending_updates=${DROP_PENDING_UPDATES}`
   };

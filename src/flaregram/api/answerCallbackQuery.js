@@ -1,12 +1,13 @@
 //// flaregram © 2024 by Aditya Sharma is licensed under GNU AFFERO GENERAL PUBLIC LICENSE (GNU AGPL v3).
 
 
+import env from '../../config.json'
 import { ErrorStr, colors } from '../utils/strings.js';
 
 /// --------- SAnswer Callback Query Function ---------- ///
 export async function f_answerCallbackQuery(body) {
   try {
-  const API_URL = `https://api.telegram.org/bot${BOT_TOKEN}/answerCallbackQuery`;
+  const API_URL = `https://api.telegram.org/bot${env.BOT_TOKEN}/answerCallbackQuery`;
 
   /// Making mandatory params ///
   let param_id = '';
@@ -45,6 +46,7 @@ export async function f_answerCallbackQuery(body) {
     console.error(ErrorStr.telegramError + colors.yellow + response.description + colors.white)
     console.error(colors.red + `ERROR =>  ` + colors.yellow + `Cannot perform answerCallbackQuery - ${payload.callback_query_id}` + colors.white)
   };
+    return response;
   });
 
   return response;

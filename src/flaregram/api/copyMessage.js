@@ -1,12 +1,13 @@
 //// flaregram © 2024 by Aditya Sharma is licensed under GNU AFFERO GENERAL PUBLIC LICENSE (GNU AGPL v3).
 
 
+import env from '../../config.json'
 import { ErrorStr, colors } from '../utils/strings.js';
 
 /// --------- Copy Single Message Function ---------- ///
 export async function f_copyMessage(body) {
   try {
-  const API_URL = `https://api.telegram.org/bot${BOT_TOKEN}/copyMessage`;
+  const API_URL = `https://api.telegram.org/bot${env.BOT_TOKEN}/copyMessage`;
 
   /// Making mandatory params ///
   let param_chat_id = '';
@@ -32,7 +33,7 @@ export async function f_copyMessage(body) {
   }
 
   /// Making optional params
-  const param_message_thread_id = body.message_thread_id == undefined?parseInt(body.message_thread_id) : '';
+  const param_message_thread_id = body.message_thread_id == undefined ? '' : parseInt(body.message_thread_id);
   const param_caption = body.caption == undefined?'':body.caption;
   const param_parse_mode = body.parse_mode == undefined?'':body.parse_mode;
   const param_caption_entities = body.caption_entities == undefined?'':body.caption_entities;
@@ -67,6 +68,7 @@ export async function f_copyMessage(body) {
     console.error(ErrorStr.telegramError + colors.yellow + response.description + colors.white)
     console.error(colors.red + `ERROR =>  ` + colors.yellow + `Cannot Copy Message - msg: ${payload.message_id}` + colors.white)
   };
+    return response;
   });
 
   return response;
