@@ -1,68 +1,94 @@
 # flaregram — TODO
 
-Working branch: **`beta`**. Do not commit to `main`. Promotion to `main` is a manual decision.
+Working branch: **`beta`**. Promotion to `main` is a manual decision.
 
 ---
 
-## Done in this round (commit on `beta`)
+## Done — Round 2 (event-style dispatch + env migration)
 
-Bug fixes only — restore working state. No architectural changes.
+The new Router/Client architecture is now functional, and the `import env from config.json` pattern is gone.
 
-### API methods — config.json migration + return-path fixes
-- [x] **sendMessage.js** — fixed catch fall-through (was returning a `Response` then trying to call `response.json()` on an out-of-scope variable). Catch now returns `{ ok: false, error: error.message }`. Removed the stray `console.log(response.json())` (misuse — `.json()` returns a Promise).
-- [x] **forwardMessage.js** / **forwardMessages.js** / **copyMessage.js** / **copyMessages.js** / **answerCallbackQuery.js**
-  - Added `import env from '../../config.json'`; replaced bare `${BOT_TOKEN}` with `${env.BOT_TOKEN}` (sendMessage and webhook were already migrated; the rest were not).
-  - Swapped the inverted `body.message_thread_id == undefined ? parseInt(...) : ''` ternary (was calling `parseInt(undefined) → NaN`) → now `… ? '' : parseInt(...)`.
-  - Added `return response;` inside the second `.then()` so the outer `await` actually receives the parsed body instead of `undefined`.
-- [x] **copyMessages.js** specifically:
-  - Renamed `f_copyMessage` → `f_copyMessages` (was colliding with the singular file's export name).
-  - Fixed the undeclared variable: `body.message_id` / `param_message_id` → `body.message_ids` / `param_message_ids` (and the error string).
+### Event-listener-style command/callback dispatch
 
-### utils/webhook.js
-- [x] Dropped the unused `let token;` and the inverted secret-token branches. Replaced with a single guard: only append `&secret_token=...` when `SECRET_TOKEN` is a non-empty string.
+```js
+import { app } from './flaregram/client';
+import { bot } from './flaregram/bot';
 
-### Already correct on beta — no change needed
-- `strings.js` — `REPO_VERSION` was removed from `status_good`/`status_bad` here, so the module-load `ReferenceError` from `main` doesn't occur on `beta`.
+app.on_message('/start', (ctx, worker) => {
+  worker.waitUntil(bot.message.sendMessage({
+    chat_id: ctx.message.chat.id,
+    text: 'hello',
+  }));
+});
+
+app.on_callback_prefix('vote:', (ctx, worker) => { /* ... */ });
+app.on_callback('info:about', (ctx, worker) => { /* ... */ });
+app.on_message('*', (ctx, worker) => { /* catch-all */ });
+```
+
+Plugins register handlers at module load. No more if/else dispatch loop. Built into [src/flaregram/client.js](src/flaregram/client.js):
+- `app.on_message(cmd, handler)` — exact first-token match. `'*'` = catch-all.
+- `app.on_callback(data, handler)` — exact `callback_data` match.
+- `app.on_callback_prefix(prefix, handler)` — runs when `callback_data.startsWith(prefix)`.
+- `app.dispatchUpdate(update, workerCtx)` — internal; you don't call this.
+- `app.launch(request, env, workerCtx)` — call this from your `fetch`.
+- Per-handler `try/catch`: a buggy reply doesn't 500 the webhook (Telegram won't retry).
+- `ctx.command` and `ctx.args` are auto-populated for message updates.
+
+### Built-in routes (auto-wired in `client.js`)
+
+- `GET /` — `status_good` JSON
+- `POST /bot` — secret-token check → `app.dispatchUpdate(update, workerCtx)`
+- `POST /set-webhook` — calls `setWebhook(...)` from env
+
+### env migration: `config.json` → Workers `env`
+
+- New [src/flaregram/utils/config.js](src/flaregram/utils/config.js) — `setEnv` / `getEnv` singleton.
+- Every API method (`api/sendMessage.js`, `forwardMessage.js`, `forwardMessages.js`, `copyMessage.js`, `copyMessages.js`, `answerCallbackQuery.js`) and `webhook.js` + `legacy_router.js` now resolve env via `getEnv()` instead of `import env from '../../config.json'`.
+- `app.launch(request, env, workerCtx)` calls `setEnv(env)` automatically.
+- **Verified the secret no longer lands in the deployed bundle** — `grep` for the token in `wrangler deploy --dry-run` output: 0 matches.
+
+### Config layout
+
+- `wrangler.toml [vars]` — `DROP_PENDING_UPDATES = "True"` (the only non-secret).
+- New `.dev.vars.sample` — template for local secrets (`BOT_TOKEN`, `WEBHOOK_URL`, `SECRET_TOKEN`). Copy → `.dev.vars` (gitignored). Wrangler auto-loads it for `wrangler dev`.
+- For deploy: `wrangler secret put BOT_TOKEN` (interactive, encrypted, never in code).
+- Removed `src/config_sample.json` (replaced by `.dev.vars.sample`).
+- `.gitignore` — added `.dev.vars`, added `src/config.json` (defense-in-depth in case a stale copy lingers), removed the `src/config.js` typo line.
+
+### Small followups landed
+- `bot.message.copyMessages` is now exposed (was implemented in `api/copyMessages.js` but never wired into `bot.js`).
+- Fixed `// SAnswer Callback Query Function` typo → `Answer`.
+
+### Sample / entrypoint
+
+- [src/index.sample.js](src/index.sample.js) rewritten to use the new pattern. Inline samples (commands + callbacks) — copy → `src/index.js` to start.
 
 ---
 
-## Still broken / deferred (next rounds)
+## Verified end-to-end
 
-### 1. `client.js` + `utils/router.js` — the new architecture is incomplete
-Beta's commit message acknowledges: _"Know Issues: new Router not working, plugins not working."_
+`wrangler dev` (v4.87.0) with `.dev.vars` providing real `BOT_TOKEN`. All paths returned the expected response and the wrangler log shows the dispatch trace:
 
-- `Client.launch(request, ctx)` is empty — the entry point that should dispatch to the router never runs anything.
-- `addMethodsToDictionary(router)` iterates over **Router.prototype** (`add`, `route`, `notFound`, `constructor`) and registers each as `POST /webhook` — that's not what should happen. It should iterate over the `Client` instance's listeners, or just be deleted in favor of explicit route wiring inside `launch()`.
-- `router.add()` registers exact-match `${method} ${pathname}` keys — fine, but no `/bot` and `/set-webhook` routes are wired up anywhere on beta. The legacy router did this; the new one needs equivalent wiring (probably inside `Client.launch()`).
-- Decision needed: is `legacy_router.js` kept as a fallback, or removed once the new Router/Client is functional?
+| Probe | Result |
+|---|---|
+| `GET /` | 200 + `status_good` |
+| `POST /bot` (correct secret, `/start`) | 200 `{"ok":true}` — `cmdStart` fired, `sendMessage` POST'd to real Telegram with real token |
+| `POST /bot` (correct secret, `/echo hello world`) | 200 — `ctx.args = ["hello","world"]`, payload `text: "echo: hello world"` |
+| `POST /bot` (correct secret, `callback_query` with `data: "vote:like"`) | 200 — `on_callback_prefix("vote:")` matched, `answerCallbackQuery` + follow-up `sendMessage` both ran |
+| `POST /bot` (correct secret, plain text `"hi there"`) | 200 — no command match, caught by `on_message("*")` → "you said: hi there" |
+| `POST /bot` (WRONG secret) | 200 + `status_good` (silent fall-through; updateHandler not invoked) |
 
-### 2. Entry point — `src/index.sample.js` shipped (uses legacy_router)
-A working starter template now lives at `src/index.sample.js`. It demonstrates a minimal bot (Section A: /start, /help, echo) and a richer bot (Section B: command table, inline keyboard, callback_query, message forwarding). Toggle which one runs with a one-line change inside `updateHandler`.
-
-It deliberately wires up against `legacy_router.js` since the new Router/Client in `client.js` is still incomplete. When that work lands, swap the import to `flaregram/client.js` and rewrite the file to use `app.on_message(...)` + `app.launch()`.
-
-`src/index.js` itself is still gitignored — copy `src/index.sample.js` → `src/index.js` to start.
-
-### 3. `README.md` is in `.gitignore`
-Probably accidental — adding it to gitignore line 11 means README edits never get committed. Decide whether to remove that line (intent: keep README in repo) or leave (intent: README is locally edited only).
-
-### 4. config.json bootstrap
-- `import env from '../../config.json'` is hard-coded across `webhook.js` and every `api/*.js`. Fresh clones don't have `config.json` — only `config_sample.json`. The framework won't bundle without it.
-- Document in README (or inline): "copy `src/config_sample.json` → `src/config.json` before `npm start`."
-- Optional: switch from JSON-file imports back to `wrangler.toml [vars]` + reading `env` from the fetch handler. JSON-import config means the token is bundled into the worker artifact at deploy time, which is fine for a single-developer bot but unusual for shared/templated frameworks.
-
-### 5. Other inconsistencies (low priority)
-- `bot.js` doesn't expose `f_copyMessages` — only the singular form. Wire it in if `bot.message.copyMessages` is wanted.
-- API methods are inconsistent: `sendMessage` returns parsed JSON; the others return whatever the second `.then()` returns (now fixed to be the parsed JSON, but still inconsistent with `sendMessage`'s explicit catch shape). Consider standardizing return shapes (`{ ok, result, error? }`).
-- `f_answerCallbackQuery` comment says "SAnswer" — typo.
-- The repeating `body.x == undefined ? default : body.x` pattern is begging for a small `optional(body.x, default)` helper.
+(The Telegram-side 400 responses are because the test `chat_id: 12345` isn't a real chat for this bot. The framework's outbound URL, payload, and error handling are all correct.)
 
 ---
 
-## Verification checklist
+## Still deferred (next rounds)
 
-- [ ] `npm start` (= `wrangler dev`) — worker boots without `ReferenceError`. (Only meaningful after the Client/Router work in §1 is complete; for now, just check the modules parse.)
-- [ ] `POST /set-webhook` returns Telegram's `Webhook was set` (after Router/Client wiring).
-- [ ] Send `/start` to the bot — `bot.message.sendMessage({...})` reaches Telegram and the parsed `{ ok: true, result: {...} }` is returned to the caller.
-- [ ] `forwardMessage`, `forwardMessages`, `copyMessage`, `copyMessages`, `answerCallbackQuery` — each returns parsed JSON (not `undefined`) and logs no `parseInt(undefined) → NaN` warnings.
-- [ ] Negative path: `bot.message.sendMessage({})` (no chat_id) — logs `Undefined mandatory parameter => chat_id` and returns `{ ok: false, error: ... }` rather than crashing the worker.
+1. **`legacy_router.js`** — kept for back-compat but no longer the primary path. Decide whether to delete or leave as a fallback.
+2. **`client.js` event surface** — `app.emit('error', ...)` + `app.emit('update', ...)` are wired but no plugin yet uses them. If desired, add an `app.on('error', ...)` plugin example.
+3. **More API methods** — `editMessageText`, `editMessageReplyMarkup`, `deleteMessage`, `sendPhoto`, `sendDocument` etc. are not wrapped yet.
+4. **README / `.gitignore`** — `README.md` is in `.gitignore` (line 13). Edits don't get committed. Decide whether to remove that line.
+5. **Wrangler version pin** — `package.json` still pins `wrangler@^3.30.1`, which crashes on Node 24. Local testing has been done with a transient `wrangler@4` install. Bumping the pin is a one-line change.
+6. **Plugin loader** — the sample inlines all handlers. If you want a multi-file `src/plugins/` pattern, ship a barrel `src/plugins/index.js` that imports each plugin file and is itself imported from `src/index.js`.
+7. **`addMethodsToDictionary`** removed in this round (it was broken). No replacement needed; `client.js` wires routes explicitly.

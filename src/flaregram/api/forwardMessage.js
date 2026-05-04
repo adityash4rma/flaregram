@@ -1,12 +1,13 @@
 //// flaregram © 2024 by Aditya Sharma is licensed under GNU AFFERO GENERAL PUBLIC LICENSE (GNU AGPL v3).
 
 
-import env from '../../config.json'
+import { getEnv } from '../utils/config.js';
 import { ErrorStr, colors } from '../utils/strings.js';
 
 /// --------- Forward Single Message Function ---------- ///
 export async function f_forwardMessage(body) {
   try {
+  const env = getEnv();
   const API_URL = `https://api.telegram.org/bot${env.BOT_TOKEN}/forwardMessage`;
 
   /// Making mandatory params ///

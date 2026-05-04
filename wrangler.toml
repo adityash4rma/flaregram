@@ -2,9 +2,15 @@ name = "flaregram"
 main = "src/index.js"
 compatibility_date = "2023-05-18"
 compatibility_flags = ["nodejs_compat"]
-rules = [
-  { type = "Text", globs = ["config.json"], fallthrough = true }
-]
 
 [dev]
 host = "localhost"
+
+# Non-secret defaults are committed here. Override per-environment if needed.
+[vars]
+DROP_PENDING_UPDATES = "True"
+
+# Secrets (BOT_TOKEN, SECRET_TOKEN, WEBHOOK_URL) are NOT in this file.
+# - Local dev: copy `.dev.vars.sample` -> `.dev.vars` and fill in real values.
+#   Wrangler auto-loads `.dev.vars` for `wrangler dev` and merges with [vars].
+# - Deploy:    `wrangler secret put BOT_TOKEN`, etc. (interactive, encrypted).

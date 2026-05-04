@@ -1,8 +1,9 @@
 //// flaregram © 2024 by Aditya Sharma is licensed under GNU AFFERO GENERAL PUBLIC LICENSE (GNU AGPL v3).
-import env from '../../config.json'
+import { getEnv } from './config.js';
 
 /// --------- Setting Webhook URL ---------- ///
 async function setWebhook(URL, SECRET_TOKEN, DROP_PENDING_UPDATES) {
+  const env = getEnv();
   let HOOK_URL = `https://api.telegram.org/bot${env.BOT_TOKEN}/setWebhook?url=${URL}`;
 
   if (typeof SECRET_TOKEN === "string" && SECRET_TOKEN !== '') {

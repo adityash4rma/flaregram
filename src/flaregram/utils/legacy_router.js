@@ -1,6 +1,6 @@
 //// flaregram © 2024 by Aditya Sharma is licensed under GNU AFFERO GENERAL PUBLIC LICENSE (GNU AGPL v3).
 
-import env from '../../config.json'
+import { getEnv } from './config.js';
 import { updateHandler } from '../../index';
 import { setWebhook } from './webhook';
 import {  colors, status_good, status_bad } from './strings.js';
@@ -26,6 +26,7 @@ const router = {
 // Function to process '/bot' route
 async function handleBotRequest(update) {
   try {
+    const env = getEnv();
     const token = update.headers.get('X-Telegram-Bot-Api-Secret-Token');
 
     //const { method, body } = request;
@@ -51,6 +52,7 @@ router.post('/bot', handleBotRequest);
 
 /// ----- Create a route for setting webhook url ---- ///
 router.post('/set-webhook', async (request) => {
+  const env = getEnv();
   const webhookResult = await setWebhook(env.WEBHOOK_URL, env.SECRET_TOKEN, env.DROP_PENDING_UPDATES);
   return new Response(webhookResult.description, { status: 200 });
 });
