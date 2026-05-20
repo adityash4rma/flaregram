@@ -4,10 +4,9 @@
 //
 // Pattern:
 //   - Import `app` from flaregram/client.
-//   - Register handlers with `app.on_message(cmd, fn)`,
-//     `app.on_callback(data, fn)`, `app.on_callback_prefix(prefix, fn)`.
+//   - Register handlers with `app.on_message(cmd, fn)`.
 //   - Each handler receives (ctx, worker):
-//       ctx     — the Telegram Update (with `ctx.message`, `ctx.callback_query`)
+//       ctx     — the Telegram Update (with `ctx.message`)
 //                 plus convenience props on message updates: ctx.command, ctx.args
 //       worker  — the Cloudflare Workers ExecutionContext (use worker.waitUntil
 //                 to fire-and-forget API calls)
@@ -35,7 +34,6 @@ app.on_message('/help', (ctx, worker) => {
     '*Commands*',
     '/start — say hi',
     '/help  — this list',
-    '/menu  — inline keyboard demo',
     '/echo <msg> — echo back',
   ];
   worker.waitUntil(bot.message.sendMessage({
@@ -52,52 +50,11 @@ app.on_message('/echo', (ctx, worker) => {
   }));
 });
 
-app.on_message('/menu', (ctx, worker) => {
-  worker.waitUntil(bot.message.sendMessage({
-    chat_id: ctx.message.chat.id,
-    text: 'Pick one:',
-    reply_markup: JSON.stringify({
-      inline_keyboard: [
-        [
-          { text: '👍 Like', callback_data: 'vote:like' },
-          { text: '👎 Pass', callback_data: 'vote:pass' },
-        ],
-        [
-          { text: 'About', callback_data: 'info:about' },
-        ],
-      ],
-    }),
-  }));
-});
-
 // Catch-all for messages that didn't match a command.
 app.on_message('*', (ctx, worker) => {
   worker.waitUntil(bot.message.sendMessage({
     chat_id: ctx.message.chat.id,
     text: `you said: ${ctx.message.text ?? ''}`,
-  }));
-});
-
-// ============================================================
-// Callback queries (inline-keyboard button clicks)
-// ============================================================
-
-// Prefix match: any callback_data starting with "vote:" lands here.
-app.on_callback_prefix('vote:', (ctx, worker) => {
-  const value = ctx.callback_query.data.split(':')[1];
-  worker.waitUntil(bot.message.answerCallbackQuery({ id: ctx.callback_query.id }));
-  worker.waitUntil(bot.message.sendMessage({
-    chat_id: ctx.callback_query.message.chat.id,
-    text: value === 'like' ? '🎉 thanks!' : '😢 noted.',
-  }));
-});
-
-// Exact match: only this exact callback_data fires this handler.
-app.on_callback('info:about', (ctx, worker) => {
-  worker.waitUntil(bot.message.answerCallbackQuery({ id: ctx.callback_query.id }));
-  worker.waitUntil(bot.message.sendMessage({
-    chat_id: ctx.callback_query.message.chat.id,
-    text: '*flaregram* — a tiny Cloudflare Workers Telegram bot framework.',
   }));
 });
 
