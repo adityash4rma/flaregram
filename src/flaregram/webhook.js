@@ -4,25 +4,8 @@ export function buildWebhookUrl(url) {
 }
 
 export function createTelegramClient(token, fetchImpl = fetch) {
-  if (!token || typeof token !== 'string') {
-    throw new TypeError('A Telegram BOT_TOKEN is required');
-  }
-
-  async function request(method, payload = {}) {
-    const response = await fetchImpl(
-      `https://api.telegram.org/bot${token}/${method}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      }
-    );
-    const data = await response.json();
-    if (!response.ok || data.ok === false) {
-      throw new Error(data.description || `Telegram ${method} failed (${response.status})`);
-    }
-    return data;
-  }
+  if (!token || typeof token !== 'string') throw new TypeError('A Telegram BOT_TOKEN is required');
+  const request = (method, payload = {}) => requestTelegram(token, method, payload, fetchImpl);
 
   return {
     setWebhook(url, secretToken, options = {}) {
@@ -42,3 +25,6 @@ export function createTelegramClient(token, fetchImpl = fetch) {
     },
   };
 }
+import { requestTelegram, TelegramApiError } from './api/request.js';
+
+export { TelegramApiError };
