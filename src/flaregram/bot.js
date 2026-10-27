@@ -1,7 +1,7 @@
 
 //// flaregram © 2024 by Aditya Sharma is licensed under GNU AFFERO GENERAL PUBLIC LICENSE (GNU AGPL v3).
 
-import { f_sendMessage } from "./api/sendMessage";
+import { f_sendMessage } from './api/sendMessage.js';
 
 /// Bot Object for flaregram
 

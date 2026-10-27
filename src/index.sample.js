@@ -15,8 +15,8 @@
 // For a multi-file bot, move each handler into `src/plugins/<name>.js` and
 // import them from this file (their import side-effects register the handlers).
 
-import { app } from './flaregram/client';
-import { bot } from './flaregram/bot';
+import { app } from 'flaregram';
+import { bot } from 'flaregram/bot';
 
 // ============================================================
 // Commands

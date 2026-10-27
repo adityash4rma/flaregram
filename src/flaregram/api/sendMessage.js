@@ -8,7 +8,6 @@ export async function f_sendMessage(body) {
   try {
   const env = getEnv();
   const API_URL = `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`;
-  console.log(API_URL);
   let param_chat_id = '';
   let param_text = '';
 
@@ -44,13 +43,11 @@ export async function f_sendMessage(body) {
     parse_mode: param_parse_mode
   };
 
-    console.log(JSON.stringify(payload));
   const response = await fetch(API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
-  console.log(response);
   if (!response.ok) {
     console.error('Error sending message:', response.status, response.statusText);
     throw new Error('Error sending message');

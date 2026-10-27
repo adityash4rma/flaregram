@@ -2,6 +2,21 @@
 
 Working branch: **`beta`**. Promotion to `main` is a manual decision.
 
+## Done — Round 3 (npm package + Cloudflared workflow)
+
+- Added public package entry points: `flaregram`, `flaregram/bot`,
+  `flaregram/client`, and `flaregram/webhook`.
+- Added the `flaregram init`, `flaregram dev`, and `flaregram webhook` CLI.
+- Added a Worker starter template with automatic plugin imports.
+- Added Cloudflare Quick Tunnel detection and automatic local webhook setup.
+- Removed token-bearing API URL and payload logging.
+- Added Node test coverage for plugin dispatch, scaffolding, webhook requests,
+  package imports, and deployable Worker entrypoint.
+- Updated Wrangler and Workers types for current Node-compatible releases.
+- Fixed Windows Cloudflared output handling so automatic webhook setup works
+  when the tunnel URL is emitted on stderr; removed `shell: true` from process
+  startup.
+
 ---
 
 ## Done — Round 2 (event-style dispatch + env migration)

@@ -24,10 +24,10 @@
 //   };
 
 import { EventEmitter } from 'node:events';
-import { Router } from './utils/router';
-import { setEnv, getEnv } from './utils/config';
-import { setWebhook } from './utils/webhook';
-import { colors, status_good } from './utils/strings';
+import { Router } from './utils/router.js';
+import { setEnv, getEnv } from './utils/config.js';
+import { setWebhook } from './utils/webhook.js';
+import { colors, status_good } from './utils/strings.js';
 
 export { setEnv, getEnv };
 
@@ -164,7 +164,7 @@ router.add('POST', '/bot', async (request, workerCtx) => {
       });
     }
     console.log(
-      `SERVER: Incoming ${colors.yellow}SECRET_TOKEN${colors.white} verified [ ${colors.green}${incomingSecret}${colors.white} ]`
+      `SERVER: Incoming ${colors.yellow}SECRET_TOKEN${colors.white} verified`
     );
     const update = await request.json();
     await app.dispatchUpdate(update, workerCtx);

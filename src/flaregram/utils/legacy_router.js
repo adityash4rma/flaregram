@@ -1,8 +1,8 @@
 //// flaregram © 2024 by Aditya Sharma is licensed under GNU AFFERO GENERAL PUBLIC LICENSE (GNU AGPL v3).
 
 import { getEnv } from './config.js';
-import { updateHandler } from '../../index';
-import { setWebhook } from './webhook';
+import { updateHandler } from '../../index.js';
+import { setWebhook } from './webhook.js';
 import {  colors, status_good, status_bad } from './strings.js';
 
 // Create a new router instance
