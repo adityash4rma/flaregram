@@ -1,41 +1,86 @@
+# flaregram
 
+Flaregram is a lightweight Telegram bot framework for Cloudflare Workers. It
+lets you keep bot behavior in small plugin files while the framework handles
+webhooks, routing, Telegram requests, and Worker execution contexts.
 
-<p align=center>
-<img alt="build" src="https://img.shields.io/static/v1?label=Build&message=Unstable&color=ff1743&logo=github">
-<img alt="GitHub package.json dynamic" src="https://img.shields.io/github/package-json/version/adityash4rma/flaregram?color=ff1743">
-<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/adityash4rma/flaregram?color=ff1743">
-<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/adityash4rma/flaregram?color=ff1743">
-<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/adityash4rma/flaregram">
-<img alt="GitHub Discussions" src="https://img.shields.io/github/discussions/adityash4rma/flaregram?color=ff1743">
-</p>
-<br>
+## Create a bot
 
-<p align = "center">
-<img src="https://telegra.ph/file/32b8407ce6ba4fe9d8d8c.png" width=400 />
-</p>
+```bash
+npx flaregram init my-bot
+cd my-bot
+npm install
+copy .dev.vars.sample .dev.vars
+```
 
-<!-- <h1 align="center">flaregram</h1> -->
+Set `BOT_TOKEN` and `SECRET_TOKEN` in `.dev.vars`. The token comes from
+[@BotFather](https://t.me/BotFather).
 
-  <p align="center">
-    <b>super-light</b>
-    ·
-    <b>blazing-fast</b>
-    ·
-    <b>modular</b>
-    <br><br>  
-  <i>A light-weight, blazing fast, easy-to-use, Telegram HTTP bot API framework written in javascript. It runs on cloudflare workers and uses wrangler too.</i>
-  </p>
-</div>
-<br>
+## Write a plugin
 
-## > Installation / Usage:
-> [Read the wiki](https://github.com/adityash4rma/flaregram/wiki)
+```js
+// src/plugins/start.js
+import { app } from 'flaregram';
+import { bot } from 'flaregram/bot';
 
-<br>
+app.on_message('/start', (ctx, worker) => {
+  worker.waitUntil(bot.message.sendMessage({
+    chat_id: ctx.message.chat.id,
+    text: 'Hey, this is a simple message!',
+  }));
+});
+```
 
+Import the plugin from `src/plugins/index.js`. Plugins register handlers when
+they are imported; no central command switch is needed.
 
+## Local Telegram webhooks
 
-## > License
-![License Logo](https://www.gnu.org/graphics/agplv3-with-text-162x68.png)
+Install [cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/),
+then run:
 
-_flaregram © 2024 by Aditya Sharma is licensed under GNU AFFERO GENERAL PUBLIC LICENSE (GNU AGPL v3). To view a copy of this license_
+```bash
+npm run dev:telegram
+```
+
+Flaregram starts Wrangler, creates a Cloudflare Quick Tunnel, waits for the
+tunnel to become reachable, and configures Telegram with the temporary `/bot`
+webhook URL. This replaces ngrok. The URL changes when the tunnel restarts.
+
+For manual control:
+
+```bash
+npx flaregram webhook set --url https://your-url.example
+npx flaregram webhook info
+npx flaregram webhook delete
+```
+
+## Deploy
+
+```bash
+npx wrangler secret put BOT_TOKEN
+npx wrangler secret put SECRET_TOKEN
+npx wrangler deploy
+npx flaregram webhook set --url https://your-worker.workers.dev
+```
+
+Production Workers do not need Cloudflared because their Worker URL is already
+public.
+
+## Install in an existing Worker
+
+```bash
+npm install flaregram
+```
+
+Public entry points are available from `flaregram`, `flaregram/bot`,
+`flaregram/client`, and `flaregram/webhook`.
+
+## Development
+
+```bash
+npm test
+npm run start
+```
+
+Flaregram is licensed under the GNU AGPL v3. See [LICENSE](./LICENSE).

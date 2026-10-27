@@ -1,11 +1,13 @@
 /node_modules
 todo.txt
 /dist
+/dist-smoketest
 .prettierrc
 src/plugins
 src/index.js
-src/config.js
-wrangler.toml
+src/config.json
+.dev.vars
 /.wrangler
 src/flaregram/utils/registrar.js
 howtoKV.txt
+/.claude

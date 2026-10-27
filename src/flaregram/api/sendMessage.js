@@ -1,13 +1,13 @@
-//// flaregram © 2024 by Aditya Sharma is licensed under Attribution-NonCommercial 4.0 International. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/
+//// flaregram © 2024 by Aditya Sharma is licensed under GNU AFFERO GENERAL PUBLIC LICENSE (GNU AGPL v3).
 
-
+import { getEnv } from '../utils/config.js';
 import { ErrorStr, colors } from '../utils/strings.js';
 
 /// --------- Sending Message Function ---------- ///
 export async function f_sendMessage(body) {
   try {
-  const API_URL = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-
+  const env = getEnv();
+  const API_URL = `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`;
   let param_chat_id = '';
   let param_text = '';
 
@@ -43,23 +43,20 @@ export async function f_sendMessage(body) {
     parse_mode: param_parse_mode
   };
 
-    console.log(JSON.stringify(payload));
   const response = await fetch(API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
-
   if (!response.ok) {
     console.error('Error sending message:', response.status, response.statusText);
     throw new Error('Error sending message');
   }
 
-  return response;
+  return await response.json();
   } catch (error){
-    console.error(error)
-  };
-
-  return response.json()
+    console.error(error);
+    return { ok: false, error: error.message };
+  }
 }
 

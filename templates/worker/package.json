@@ -1,0 +1,19 @@
+{
+  "name": "flaregram-bot",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "dev:telegram": "flaregram dev",
+    "deploy": "wrangler deploy",
+    "webhook:set": "flaregram webhook set",
+    "webhook:info": "flaregram webhook info",
+    "webhook:delete": "flaregram webhook delete"
+  },
+  "dependencies": {
+    "flaregram": "latest"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

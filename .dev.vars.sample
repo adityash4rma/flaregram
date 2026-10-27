@@ -1,0 +1,16 @@
+# Local-dev secrets for flaregram. Copy this file to `.dev.vars` (gitignored)
+# and fill in real values. Wrangler auto-loads `.dev.vars` for `wrangler dev`
+# and merges with the [vars] block in wrangler.toml.
+#
+# For deploy: use `wrangler secret put BOT_TOKEN` (interactive, encrypted).
+
+# From @BotFather
+BOT_TOKEN = "0000000000:replace_with_real_bot_token_from_botfather"
+
+# Public URL Telegram will POST updates to (your-tunnel-or-cf-route + /bot)
+WEBHOOK_URL = "https://example.workers.dev/bot"
+
+# Any random string. Telegram will echo it as X-Telegram-Bot-Api-Secret-Token
+# on every webhook delivery so /bot can verify the request really came from
+# Telegram and not someone who guessed your worker URL.
+SECRET_TOKEN = "any_random_string_min_16_chars"

@@ -1,0 +1,3 @@
+BOT_TOKEN = "replace_with_token_from_botfather"
+SECRET_TOKEN = "replace_with_random_secret"
+WEBHOOK_URL = "https://your-tunnel-or-worker-url"

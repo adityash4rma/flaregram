@@ -1,4 +1,4 @@
-//// flaregram © 2024 by Aditya Sharma is licensed under Attribution-NonCommercial 4.0 International. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/
+//// flaregram © 2024 by Aditya Sharma is licensed under GNU AFFERO GENERAL PUBLIC LICENSE (GNU AGPL v3).
 
 
 //// --- Color codes ---- ////
@@ -23,14 +23,14 @@ export const colors = {
 
 //// ---- Strings ---- ////
 
-export const status_good = {"Status":"Operational / OK / Good","flaregram":{"Version":REPO_VERSION,"Github":"https://github.com/adityash4rma/flaregram","Developer":"https://github.com/adityash4rma"}};
+export const status_good = {"Status":"Operational / OK / Good","flaregram":{"Github":"https://github.com/adityash4rma/flaregram","Developer":"https://github.com/adityash4rma"}};
 
-export const status_bad =  {"Status":"Broken / NOT OK / Bad","flaregram":{"Version":REPO_VERSION,"Github":"https://github.com/adityash4rma/flaregram","Developer":"https://github.com/adityash4rma"}};
+export const status_bad =  {"Status":"Broken / NOT OK / Bad","flaregram":{"Github":"https://github.com/adityash4rma/flaregram","Developer":"https://github.com/adityash4rma"}};
 
 //// ---- Errors ----- ////
 
 export const ErrorStr = { 
-    undefinedParameter: `${colors.red}ERROR${colors.white}: Undefined mandatory parameter => `,
+    undefinedParameter: `Undefined mandatory parameter => `,
     telegramError: `${colors.red}TELEGRAM ERROR =>${colors.white}  `
 };
 
