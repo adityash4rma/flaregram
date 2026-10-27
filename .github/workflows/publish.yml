@@ -59,3 +59,9 @@ jobs:
           else
             npm publish --tag latest --access public
           fi
+
+      - name: Point main tag at stable release
+        if: github.ref_name == 'main'
+        env:
+          VERSION: ${{ steps.package.outputs.version }}
+        run: npm dist-tag add "flaregram@$VERSION" main
