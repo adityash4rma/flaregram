@@ -37,3 +37,17 @@ Use this checklist before promoting a beta package to a stable release.
 - [ ] Publish the package with the intended dist-tag.
 - [ ] Verify `npm view flaregram version dist-tags`.
 - [ ] Create a Git tag matching the published version.
+
+## GitHub Actions publishing
+
+The repository uses npm Trusted Publishing with GitHub Actions OIDC. On
+npmjs.com, open `flaregram` → **Settings** → **Trusted Publisher** and add:
+
+- Provider: GitHub Actions
+- User or organization: `adityash4rma`
+- Repository: `flaregram`
+- Workflow filename: `publish.yml`
+- Allowed action: direct `npm publish`
+
+Do not add an npm token to the repository. The workflow requests a short-lived
+OIDC credential for each publish.
