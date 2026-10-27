@@ -4,8 +4,8 @@ Flaregram is a lightweight Telegram bot framework for Cloudflare Workers. It
 lets you keep bot behavior in small plugin files while the framework handles
 webhooks, routing, Telegram requests, and Worker execution contexts.
 
-**Current release:** `1.3.0-beta.5` — JavaScript-only beta. The public API is
-small by design and may change before the first stable release.
+**Current release:** `1.3.0` — JavaScript-only stable release. The public API
+is intentionally small and documented in the GitHub Wiki.
 
 ## Create a bot
 

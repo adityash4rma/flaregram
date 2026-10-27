@@ -1,6 +1,6 @@
 # flaregram roadmap
 
-Current branch: **`main`**. Current npm release: **`1.3.0-beta.5`**.
+Current branch: **`main`**. Current npm release target: **`1.3.0`**.
 
 ## Completed
 
@@ -14,14 +14,11 @@ Current branch: **`main`**. Current npm release: **`1.3.0-beta.5`**.
 - GitHub Actions CI for `main` and `beta`.
 - Release smoke-test checklist in `docs/RELEASE_CHECKLIST.md`.
 
-## Stable-release work
+## Post-release work
 
-- Complete the release checklist with a disposable real Telegram bot.
 - Add migration notes for users of the pre-plugin router API.
-- Decide which additional Telegram methods belong in the stable contract.
-- Add consistent tests for Telegram API failures and malformed webhook input.
-- Create a stable `1.3.0` release only after the public API is deliberately
-  frozen.
+- Decide which additional Telegram methods belong in the next contract.
+- Expand tests for malformed webhook input and additional Telegram methods.
 
 ## Deferred by design
 
