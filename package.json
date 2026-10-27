@@ -31,6 +31,7 @@
     "start": "wrangler dev",
     "dev:telegram": "node ./src/cli/index.js dev",
     "test": "node --test",
+    "check": "npm test && wrangler deploy --dry-run",
     "flaregram": "node ./src/cli/index.js"
   },
   "devDependencies": {
