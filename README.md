@@ -4,6 +4,9 @@ Flaregram is a lightweight Telegram bot framework for Cloudflare Workers. It
 lets you keep bot behavior in small plugin files while the framework handles
 webhooks, routing, Telegram requests, and Worker execution contexts.
 
+**Current release:** `1.3.0-beta.5` — JavaScript-only beta. The public API is
+small by design and may change before the first stable release.
+
 ## Create a bot
 
 ```bash
@@ -76,10 +79,31 @@ npm install flaregram
 Public entry points are available from `flaregram`, `flaregram/bot`,
 `flaregram/client`, and `flaregram/webhook`.
 
+### Supported runtime API
+
+The runtime currently provides:
+
+- `app.on_message(command, handler)`
+- `app.on_callback(data, handler)`
+- `app.on_callback_prefix(prefix, handler)`
+- `app.launch(request, env, executionContext)`
+- `bot.message.sendMessage(payload)`
+- `createTelegramClient(token)` through `flaregram/webhook`
+
+Handlers receive the Telegram update as `ctx` and the Cloudflare
+`ExecutionContext` as `worker`. Telegram responses use the Bot API response
+shape. Transport or Telegram failures from `bot.message.sendMessage` are
+returned as `{ ok: false, error }` so handlers can handle them without an
+uncaught request failure.
+
+The legacy router is retained for source compatibility but is not part of the
+recommended plugin path.
+
 ## Development
 
 ```bash
 npm test
+npm run check
 npm run start
 ```
 
