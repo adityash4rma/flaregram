@@ -3,6 +3,14 @@
   "version": "1.3.0",
   "description": "A lightweight Telegram bot framework for Cloudflare Workers",
   "license": "AGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adityash4rma/flaregram.git"
+  },
+  "bugs": {
+    "url": "https://github.com/adityash4rma/flaregram/issues"
+  },
+  "homepage": "https://github.com/adityash4rma/flaregram#readme",
   "keywords": [
     "telegram",
     "telegram-bot",
