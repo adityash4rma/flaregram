@@ -96,3 +96,18 @@ test('Telegram client sets a webhook without exposing the token in the payload U
     secret_token: 'header-secret',
   });
 });
+
+test('Telegram client exposes structured API errors without exposing the token', async () => {
+  const client = createTelegramClient('private-token', async () => (
+    new Response(JSON.stringify({ ok: false, error_code: 400, description: 'Bad Request' }), {
+      status: 400,
+    })
+  ));
+
+  await assert.rejects(client.getWebhookInfo(), (error) => (
+    error.name === 'TelegramApiError' &&
+    error.method === 'getWebhookInfo' &&
+    error.code === 400 &&
+    !error.message.includes('private-token')
+  ));
+});

@@ -2,12 +2,13 @@
 
 import { getEnv } from '../utils/config.js';
 import { ErrorStr, colors } from '../utils/strings.js';
+import { requestTelegram } from './request.js';
 
 /// --------- Sending Message Function ---------- ///
 export async function f_sendMessage(body) {
   try {
+  if (!body || typeof body !== 'object') throw new TypeError('sendMessage payload must be an object');
   const env = getEnv();
-  const API_URL = `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`;
   let param_chat_id = '';
   let param_text = '';
 
@@ -43,17 +44,7 @@ export async function f_sendMessage(body) {
     parse_mode: param_parse_mode
   };
 
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
-  if (!response.ok) {
-    console.error('Error sending message:', response.status, response.statusText);
-    throw new Error('Error sending message');
-  }
-
-  return await response.json();
+  return await requestTelegram(env.BOT_TOKEN, 'sendMessage', payload);
   } catch (error){
     console.error(error);
     return { ok: false, error: error.message };
