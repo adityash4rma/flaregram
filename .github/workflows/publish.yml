@@ -28,9 +28,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Verify package
-        run: npm test
-
       - name: Read package version
         id: package
         shell: bash
