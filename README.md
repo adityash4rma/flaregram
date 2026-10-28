@@ -1,8 +1,9 @@
 <p align="center">
   <img alt="npm version" src="https://img.shields.io/npm/v/flaregram?color=ff1743">
-  <img alt="npm downloads" src="https://img.shields.io/npm/dm/flaregram?color=ff1743">
+  <img alt="npm beta version" src="https://img.shields.io/npm/v/flaregram/beta?label=beta&color=ff1743">
   <img alt="GitHub stars" src="https://img.shields.io/github/stars/adityash4rma/flaregram">
   <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/adityash4rma/flaregram?color=ff1743">
+  <img alt="license" src="https://img.shields.io/npm/l/flaregram?color=ff1743">
 </p>
 
 <p align="center">
