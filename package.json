@@ -38,7 +38,7 @@
     "deploy": "wrangler deploy",
     "start": "wrangler dev",
     "dev:telegram": "node ./src/cli/index.js dev",
-    "test": "node --test",
+    "test": "node --test --test-concurrency=1",
     "check": "npm test && wrangler deploy --dry-run",
     "flaregram": "node ./src/cli/index.js"
   },
