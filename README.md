@@ -1,5 +1,4 @@
 <p align="center">
-  <img alt="CI" src="https://github.com/adityash4rma/flaregram/actions/workflows/ci.yml/badge.svg">
   <img alt="npm version" src="https://img.shields.io/npm/v/flaregram?color=ff1743">
   <img alt="npm downloads" src="https://img.shields.io/npm/dm/flaregram?color=ff1743">
   <img alt="GitHub stars" src="https://img.shields.io/github/stars/adityash4rma/flaregram">
