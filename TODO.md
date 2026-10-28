@@ -9,6 +9,7 @@ Current branch: **`main`**. Current npm release target: **`1.3.0`**.
 - Public npm package exports and project scaffolding CLI.
 - Cloudflared local webhook workflow with URL parsing and readiness retries.
 - Webhook management commands: `set`, `info`, and `delete`.
+- `bot.message.sendPhoto()` with file IDs, URLs, and multipart Blob/File uploads.
 - Secret-safe logging and package contents.
 - Node test suite and Wrangler dry-run verification.
 - GitHub Actions CI for `main` and `beta`.

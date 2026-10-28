@@ -10,8 +10,10 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 
 test('package exposes the public runtime entry point', async () => {
   const runtime = await import('../src/flaregram/index.js');
+  const { bot } = await import('../src/flaregram/bot.js');
   assert.equal(typeof runtime.app.on_message, 'function');
   assert.equal(typeof runtime.Client, 'function');
+  assert.equal(typeof bot.message.sendPhoto, 'function');
 });
 
 test('the repository has a deployable Worker entry point', () => {

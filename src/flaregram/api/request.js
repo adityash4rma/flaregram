@@ -16,10 +16,11 @@ export async function requestTelegram(token, method, payload = {}, fetchImpl = f
 
   let response;
   try {
+    const isFormData = typeof FormData !== 'undefined' && payload instanceof FormData;
     response = await fetchImpl(`https://api.telegram.org/bot${token}/${method}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+      ...(isFormData ? {} : { headers: { 'Content-Type': 'application/json' } }),
+      body: isFormData ? payload : JSON.stringify(payload),
     });
   } catch (cause) {
     throw new TelegramApiError(`Telegram ${method} request failed`, { method, cause });
